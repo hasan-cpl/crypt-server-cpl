@@ -1,0 +1,25 @@
+{
+  "name": "crypt-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "author": "Hasan",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "discord.js": "^14.6.0",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.5.2",
+    "node-cron": "^3.0.2",
+    "node-schedule": "^2.1.0",
+    "nodemon": "^2.0.19",
+    "web3": "^1.7.5"
+  }
+}
