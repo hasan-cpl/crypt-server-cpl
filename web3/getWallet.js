@@ -1,9 +1,9 @@
 require('dotenv').config();
 const Web3 = require('web3');
-const web3 = new Web3(process.env.WEB3_URL);
+const web3 = new Web3('https://goerli.infura.io/v3/81f3882a93c44d1381517241c631230d');
 
 const getWallet = async () => {
-   
+
     let createAccount = await web3.eth.accounts.create(web3.utils.randomHex(32));
 
     let tokenAddress = process.env.TOKEN_ADDRESS;
