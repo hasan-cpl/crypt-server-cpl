@@ -97,6 +97,18 @@ client.login(process.env.DISCORD_BOT_TOKEN);
 
 // 0 0 0 * * *
 
-cron.schedule('*/59 * * * * *', async () => {
-    await startScheduleTask();
+// cron.schedule('*/59 * * * * *', async () => {
+//     await startScheduleTask();
+// });
+
+// Schedule the task to run at 11:59 PM on the last day of the month (28-31)
+cron.schedule('59 23 28-31 * *', async () => {
+    // Check if tomorrow is the 1st of the next month
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    if (tomorrow.getDate() === 1) {
+        // Execute the task on the last day of the month
+        await startScheduleTask();
+    }
 });
