@@ -7,7 +7,7 @@ const userSchema = require("../schema/userSchema");
 
 require('dotenv').config();
 const router = express.Router();
-const web3 = new Web3('https://sepolia.infura.io/v3/81f3882a93c44d1381517241c631230d');
+const getWallet = require('../web3/getWallet');
 
 
 
@@ -16,7 +16,7 @@ const User = new mongoose.model("User", userSchema);
 
 router.get("/hello", async (req, res) => {
 
-    res.json("Hello Hasan");
+    res.json("Hello CPL Crypt");
 
 });
 
@@ -40,13 +40,21 @@ router.post("/signup", async (req, res) => {
                 date: req.body.date,
                 wallet: wallet
             });
+            const user = await newUser.save();
+
+            res.json({
+                code: 201,
+                "data": user,
+                "message": "Signup Successful"
+            });
+        } else {
+            res.json({
+                code: 400,
+                "data": error,
+                "message": "Signup failed!"
+            });
         }
-        const user = await newUser.save();
-        res.json({
-            code: 201,
-            "data": user,
-            "message": "Signup Successful"
-        });
+
     } catch (error) {
         res.json({
             code: 400,
@@ -56,74 +64,7 @@ router.post("/signup", async (req, res) => {
     }
 });
 
-const getWallet = async () => {
-    let createAccount = await web3.eth.accounts.create(web3.utils.randomHex(32));
 
-    let tokenAddress = process.env.TOKEN_ADDRESS;
-    let fromAddress = process.env.FROM_ADDRESS;
-    const privateKey = process.env.FROM_ADDRESS_PRIVATE_KEY;
-
-
-    let toAddress = createAccount.address;
-    let wallet = null;
-
-    let contractABI = [
-        // transfer
-        {
-            "constant": false,
-            "inputs": [
-                {
-                    "name": "_to",
-                    "type": "address"
-                },
-                {
-                    "name": "_value",
-                    "type": "uint256"
-                }
-            ],
-            "name": "transfer",
-            "outputs": [
-                {
-                    "name": "",
-                    "type": "bool"
-                }
-            ],
-            "type": "function"
-        }
-    ];
-
-    let contract = new web3.eth.Contract(contractABI, tokenAddress, { from: fromAddress })
-    let amount = web3.utils.toHex(web3.utils.toWei("10")); //10 DEMO Token
-    let data = contract.methods.transfer(toAddress, amount).encodeABI();
-
-    let txObj = {
-        gas: web3.utils.toHex(100000),
-        "to": tokenAddress,
-        "value": "0x00",
-        "data": data,
-        "from": fromAddress
-
-    };
-
-    try {
-        const signedTx = await web3.eth.accounts.signTransaction(txObj, privateKey);
-        const sendSignedTx = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-
-
-        if (sendSignedTx) {
-            wallet = {
-                accountAddress: toAddress,
-                privateKey: createAccount.privateKey,
-                tokenAddress: tokenAddress
-            }
-        }
-    } catch (error) {
-        console.log(error);
-    }
-
-    return wallet;
-
-}
 
 // LOGIN
 
@@ -247,7 +188,7 @@ router.put('/discord-info/:id', async (req, res) => {
     //console.log(id);
 
     const discordInfo = req.body;
-    console.log(discordInfo);
+    //console.log(discordInfo);
     try {
         const result = await User.findOneAndUpdate(
             { _id: req.params.id },
@@ -260,7 +201,7 @@ router.put('/discord-info/:id', async (req, res) => {
 
         );
 
-        console.log(result);
+        //console.log(result);
 
         res.json(result);
 

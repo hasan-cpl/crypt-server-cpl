@@ -5,8 +5,6 @@ const cron = require('node-cron');
 require('dotenv').config();
 const cors = require('cors');
 
-const schedule = require('node-schedule');
-
 const { Client, Events, Intents, GatewayIntentBits, Partials } = require('discord.js');
 
 
@@ -14,14 +12,6 @@ const userRouter = require('./routes/userHandler');
 const proposalRouter = require('./routes/proposalHandler');
 const discordMsgRouter = require('./routes/v1/messageHandler');
 const tokenDisburseRouter = require('./routes/v1/tokenDisburseHandler');
-
-const messageSchema = require('./schema/messageSchema');
-const reactionSchema = require('./schema/reactionSchema');
-const tokenDisburseSchema = require('./schema/token-disburse/TokenDisburseSchema');
-
-const DiscordMsg = new mongoose.model('DiscordMsg', messageSchema);
-const DiscordReaction = new mongoose.model('DiscordReaction', reactionSchema);
-const TokenDisburse = new mongoose.model('TokenDisburse', tokenDisburseSchema);
 
 const createMessage = require('./discord/createMessage');
 const addMessageReaction = require("./discord/addMessageReaction");
