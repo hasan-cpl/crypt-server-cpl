@@ -16,7 +16,7 @@ const User = new mongoose.model("User", userSchema);
 
 router.get("/hello", async (req, res) => {
 
-    res.json("Hello CPL Crypt");
+    res.json("Hello CPL Crypt test");
 
 });
 
