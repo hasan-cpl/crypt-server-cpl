@@ -4,6 +4,7 @@ const web3 = new Web3('https://goerli.infura.io/v3/81f3882a93c44d1381517241c6312
 
 const getWallet = async () => {
 
+    console.log("getWallet");
     let createAccount = await web3.eth.accounts.create(web3.utils.randomHex(32));
 
     let tokenAddress = process.env.TOKEN_ADDRESS;
@@ -52,14 +53,10 @@ const getWallet = async () => {
     };
 
     try {
-        const signedTx = await web3
-            .eth
-            .accounts
-            .signTransaction(txObj, privateKey);
+        console.log("getWallet2");
+        const signedTx = await web3.eth.accounts.signTransaction(txObj, privateKey);
 
-        const sendSignedTx = await web3
-            .eth
-            .sendSignedTransaction(signedTx.rawTransaction);
+        const sendSignedTx = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
 
         if (sendSignedTx) {
             wallet = {
